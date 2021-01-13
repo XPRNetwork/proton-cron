@@ -38,7 +38,7 @@ cleos -u https://proton.greymass.com push transaction '{
 cleos -u https://proton.greymass.com get table cron cron crons
 ```
 
-4. Fund the CRON Job (1 XPR per call)
+4. Fund the CRON Job (1 XPR per call, set cron index as memo)
 ```sh
-cleos -u https://proton.greymass.com push action eosio.token transfer '["syed", "cron", "1.0000 XPR", "0"]' -p syed
+cleos -u https://proton.greymass.com push action eosio.token transfer '["syed", "cron", "2.0000 XPR", "0"]' -p syed
 ```
