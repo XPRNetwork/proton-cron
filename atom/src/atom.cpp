@@ -58,29 +58,29 @@ namespace proton
   ) {
     require_auth(account);
 
-    if (_crons.begin() != _crons.end()) {
-      auto idx = _crons.get_index<"bytime"_n>();
-      auto itr = idx.lower_bound(0);
-      auto oitr = itr;
+    check(_crons.begin() != _crons.end(), "no crons to process");
 
-      for (uint16_t i = 0; i < max; ++i) {
-        itr = oitr;
-        if (itr == idx.end() || itr->time_left() > 0) break;
+    auto idx = _crons.get_index<"bytime"_n>();
+    auto itr = idx.lower_bound(0);
+    auto oitr = itr;
 
-        // Charge
-        check(itr->balance >= CHARGE_PER_CALL, "balance too low.");
-        idx.modify(itr, same_payer, [&](auto& c) {
-          c.balance -= CHARGE_PER_CALL;
-          c.last_process = current_time_point();
-        });
+    for (uint16_t i = 0; i < max; ++i) {
+      itr = oitr;
+      if (itr == idx.end() || itr->time_left() > 0) break;
 
-        // Payout to processor
-        transfer_action t_action(SYSTEM_TOKEN_CONTRACT, {get_self(), name("active")} );
-        t_action.send(get_self(), account, CHARGE_PER_CALL, "Cron Processor Payment!");
+      // Charge
+      check(itr->balance >= CHARGE_PER_CALL, "balance too low.");
+      idx.modify(itr, same_payer, [&](auto& c) {
+        c.balance -= CHARGE_PER_CALL;
+        c.last_process = current_time_point();
+      });
 
-        // Deferred Call
-        process_deferred(itr->contract, account, 0);
-      }
+      // Payout to processor
+      transfer_action t_action(SYSTEM_TOKEN_CONTRACT, {get_self(), name("active")} );
+      t_action.send(get_self(), account, CHARGE_PER_CALL, "Cron Processor Payment!");
+
+      // Deferred Call
+      process_deferred(itr->contract, account, 0);
     }
   }
 

@@ -42,3 +42,8 @@ cleos -u https://proton.greymass.com get table cron cron crons
 ```sh
 cleos -u https://proton.greymass.com push action eosio.token transfer '["syed", "cron", "2.0000 XPR", "0"]' -p syed
 ```
+
+5. Anyone can call `process`, and earn 1 XPR per processed cron
+```sh
+cleos -u https://proton.greymass.com push action cron process '["syed", "1"]' -p syed
+```
