@@ -12,14 +12,14 @@ namespace proton {
     uint64_t reserved4 = 0;
     uint64_t reserved5 = 0;
   };
-  typedef eosio::singleton<"global"_n, globals> global_table;
+  typedef eosio::singleton<"globals"_n, globals> global_table;
 
   struct [[eosio::table, eosio::contract("atom")]] Cron {
     uint64_t index;
     name account;
     name contract;
     asset balance;
-    time_point start_time;
+    time_point last_process;
     uint64_t seconds_interval;
 
     uint64_t primary_key() const { return index; };
@@ -30,7 +30,7 @@ namespace proton {
       }
 
       uint64_t current = current_time_point().sec_since_epoch();
-      uint64_t start = start_time.sec_since_epoch() + seconds_interval;
+      uint64_t start = last_process.sec_since_epoch() + seconds_interval;
 
       return current >= start
         ? current - start

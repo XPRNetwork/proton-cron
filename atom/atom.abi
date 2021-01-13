@@ -24,7 +24,7 @@
                     "type": "asset"
                 },
                 {
-                    "name": "start_time",
+                    "name": "last_process",
                     "type": "time_point"
                 },
                 {
@@ -46,7 +46,7 @@
                     "type": "name"
                 },
                 {
-                    "name": "start_time",
+                    "name": "last_process",
                     "type": "time_point"
                 },
                 {
@@ -54,6 +54,16 @@
                     "type": "uint64"
                 }
             ]
+        },
+        {
+            "name": "cleanup",
+            "base": "",
+            "fields": []
+        },
+        {
+            "name": "cron",
+            "base": "",
+            "fields": []
         },
         {
             "name": "deletecron",
@@ -132,12 +142,22 @@
         {
             "name": "addcron",
             "type": "addcron",
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Add Cron\nsummary: 'Add Cron'\nicon:\n---\n."
+        },
+        {
+            "name": "cleanup",
+            "type": "cleanup",
             "ricardian_contract": ""
+        },
+        {
+            "name": "cron",
+            "type": "cron",
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cron\nsummary: 'Cron'\nicon:\n---\n."
         },
         {
             "name": "deletecron",
             "type": "deletecron",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Delete Cron\nsummary: 'Delete Cron'\nicon:\n---\n."
         },
         {
             "name": "process",

@@ -2,10 +2,10 @@
 
 namespace proton
 {
-  ACTION atom::addcron (
+  void atom::addcron (
     const name& account,
     const name& contract,
-    const time_point& start_time,
+    const time_point& last_process,
     const uint64_t& seconds_interval
   ) {
     require_auth(account);
@@ -15,12 +15,12 @@ namespace proton
       c.account = account;
       c.contract = contract;
       c.balance = asset(0, SYSTEM_TOKEN_SYMBOL);
-      c.start_time = start_time;
+      c.last_process = last_process;
       c.seconds_interval = seconds_interval;
     });
   }
 
-  ACTION atom::deletecron (
+  void atom::deletecron (
     const name& account,
     const uint64_t& cron_index
   ) {
@@ -31,7 +31,7 @@ namespace proton
     _crons.erase(cron);
   };
 
-  ACTION atom::withdraw (
+  void atom::withdraw (
     const name& account,
     const uint64_t& cron_index
   ) {
@@ -52,7 +52,7 @@ namespace proton
     });
   };
 
-  ACTION atom::process (
+  void atom::process (
     const name& account,
     const uint64_t& max
   ) {
@@ -60,7 +60,7 @@ namespace proton
 
     if (_crons.begin() != _crons.end()) {
       auto idx = _crons.get_index<"bytime"_n>();
-      auto itr = idx.begin();
+      auto itr = idx.lower_bound(0);
       auto oitr = itr;
 
       for (uint16_t i = 0; i < max; ++i) {
@@ -68,23 +68,20 @@ namespace proton
         if (itr == idx.end() || itr->time_left() > 0) break;
 
         // Charge
+        check(itr->balance >= CHARGE_PER_CALL, "balance too low.");
         idx.modify(itr, same_payer, [&](auto& c) {
           c.balance -= CHARGE_PER_CALL;
-          c.start_time = current_time_point();
-          check(c.balance.amount >= 0, "balance issue.");
+          c.last_process = current_time_point();
         });
+
+        // Payout to processor
+        transfer_action t_action(SYSTEM_TOKEN_CONTRACT, {get_self(), name("active")} );
+        t_action.send(get_self(), account, CHARGE_PER_CALL, "Cron Processor Payment!");
 
         // Deferred Call
         process_deferred(itr->contract, account, 0);
       }
     }
-  }
-
-  void atom::fundcron(const uint64_t& cron_index, const asset& fund) {
-    auto cron = _crons.require_find(cron_index, "cron not found");
-    _crons.modify(cron, same_payer, [&](auto& c) {
-      c.balance += fund;
-    });
   }
 
   void atom::process_deferred(const name& contract, const name& ram_payer, const uint64_t& delay)

@@ -30,7 +30,7 @@ namespace proton {
     ACTION addcron (
       const name& account,
       const name& contract,
-      const time_point& start_time,
+      const time_point& last_process,
       const uint64_t& seconds_interval
     );
     ACTION deletecron ( const name& account, const uint64_t& cron_index );
@@ -40,8 +40,24 @@ namespace proton {
       const uint64_t& max
     );
 
+    ACTION cleanup () {
+      require_auth(get_self());
+      
+      cron_table db(get_self(), get_self().value);
+      auto itr = db.end();
+      while(db.begin() != itr){
+        itr = db.erase(--itr);
+      }
+    };
+
+    // Just a test function
+    ACTION cron () {
+      require_auth(get_self());
+      print(get_config().txs_sent);
+    };
+
     // This function will be called when the contract is notified of incoming or outgoing transfer actions from any contract
-    [[eosio::on_notify("*::transfer")]]
+    [[eosio::on_notify("eosio.token::transfer")]]
     void ontransfer   ( const name& from,
                         const name& to,
                         const asset& quantity,

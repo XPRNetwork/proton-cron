@@ -20,4 +20,11 @@ namespace proton {
     // Long stake
     fundcron(stoull(memo), quantity);
   }
+
+  void atom::fundcron(const uint64_t& cron_index, const asset& fund) {
+    auto cron = _crons.require_find(cron_index, "cron not found");
+    _crons.modify(cron, same_payer, [&](auto& c) {
+      c.balance += fund;
+    });
+  }
 }
