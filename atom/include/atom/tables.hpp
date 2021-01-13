@@ -29,11 +29,11 @@ namespace proton {
         return numeric_limits<uint64_t>::max();
       }
 
-      uint64_t current = current_time_point().sec_since_epoch();
       uint64_t start = last_process.sec_since_epoch() + seconds_interval;
+      uint64_t current = current_time_point().sec_since_epoch();
 
-      return current >= start
-        ? current - start
+      return start >= current
+        ? start - current
         : 0;
     };
   };

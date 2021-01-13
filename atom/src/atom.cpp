@@ -58,11 +58,11 @@ namespace proton
   ) {
     require_auth(account);
 
-    check(_crons.begin() != _crons.end(), "no crons to process");
-
     auto idx = _crons.get_index<"bytime"_n>();
     auto itr = idx.lower_bound(0);
     auto oitr = itr;
+
+    check(itr != idx.end() && itr->time_left() == 0, "no crons to process");
 
     for (uint16_t i = 0; i < max; ++i) {
       itr = oitr;

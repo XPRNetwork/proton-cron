@@ -7,7 +7,7 @@ using namespace std;
 #define SYSTEM_CONTRACT name("eosio")
 #define SYSTEM_TOKEN_CONTRACT name("eosio.token")
 #define SYSTEM_TOKEN_SYMBOL symbol("XPR", 4)
-#define CHARGE_PER_CALL asset(1, SYSTEM_TOKEN_SYMBOL)
+#define CHARGE_PER_CALL asset(1 * 10000, SYSTEM_TOKEN_SYMBOL)
 
 namespace proton
 {

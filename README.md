@@ -18,7 +18,7 @@ cleos -u https://proton.greymass.com push transaction '{
       "name": "addcron",
       "data": {
         "account": "syed",
-        "contract": "mycontract",
+        "contract": "cron",
         "last_process": "1970-01-01T00:26:50.347",
         "seconds_interval": 86400
       },
@@ -45,5 +45,5 @@ cleos -u https://proton.greymass.com push action eosio.token transfer '["syed", 
 
 5. Anyone can call `process`, and earn 1 XPR per processed cron
 ```sh
-cleos -u https://proton.greymass.com push action cron process '["syed", "1"]' -p syed
+cleos -u https://proton.greymass.com push action cron process '["syed", "5"]' -p syed
 ```
