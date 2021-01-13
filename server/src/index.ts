@@ -28,7 +28,13 @@ const process = async () => {
     })
     return result
   } catch (e) {
-    console.log(e)
+    const message = 'assertion failure with message: no crons to process'
+    if (e.json && e.json.error && e.json.error.details && e.json.error.details.length && e.json.error.details[0].message === message) {
+      console.count('No crons available to process')
+      return
+    } else {
+      console.error(e)
+    }
   }
 }
 

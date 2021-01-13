@@ -56,11 +56,6 @@
             ]
         },
         {
-            "name": "cleanup",
-            "base": "",
-            "fields": []
-        },
-        {
             "name": "cron",
             "base": "",
             "fields": []
@@ -143,11 +138,6 @@
             "name": "addcron",
             "type": "addcron",
             "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Add Cron\nsummary: 'Add Cron'\nicon:\n---\n."
-        },
-        {
-            "name": "cleanup",
-            "type": "cleanup",
-            "ricardian_contract": ""
         },
         {
             "name": "cron",

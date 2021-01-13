@@ -5,6 +5,7 @@ module.exports = {
         script: 'dist/index.js',
         node_args : '-r dotenv/config',
         watch: false,
+        time: true,
         env: {
           'CHAIN': 'proton'
         }
