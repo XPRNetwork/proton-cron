@@ -39,8 +39,10 @@ const process = async () => {
 }
 
 export const main = async () => {
-  process()
-  await wait(WAIT_TIME)
+  while(true) {
+    process()
+    await wait(WAIT_TIME)
+  }
 }
 
 main()
