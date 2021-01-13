@@ -5,6 +5,7 @@
 1. Add "cron" action to your contract:
 ```c++
 ACTION cron () {
+  require_auth("cron");
   // do whatever
 }
 ```
