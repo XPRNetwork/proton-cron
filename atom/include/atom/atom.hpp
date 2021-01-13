@@ -40,15 +40,15 @@ namespace proton {
       const uint64_t& max
     );
 
-    ACTION cleanup () {
-      require_auth(get_self());
+    // ACTION cleanup () {
+    //   require_auth(get_self());
       
-      cron_table db(get_self(), get_self().value);
-      auto itr = db.end();
-      while(db.begin() != itr){
-        itr = db.erase(--itr);
-      }
-    };
+    //   cron_table db(get_self(), get_self().value);
+    //   auto itr = db.end();
+    //   while(db.begin() != itr){
+    //     itr = db.erase(--itr);
+    //   }
+    // };
 
     // Just a test function
     ACTION cron () {
