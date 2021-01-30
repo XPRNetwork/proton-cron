@@ -13,8 +13,11 @@ ACTION cron () {
 1. Create daily CRON Job (replace params with your own)
 
 account: account creating cron
+
 contract: account your contract is deployed to
+
 last_process: date to start processing from
+
 seconds_interval: time between each process (roughly, never exact)
 
 ```sh
